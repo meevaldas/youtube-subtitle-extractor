@@ -1,0 +1,9 @@
+/venv/
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/.gitignore
+/.idea/extract_yt_subtitle.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/vcs.xml
+/db.sqlite3
