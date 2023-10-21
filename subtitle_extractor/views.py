@@ -16,10 +16,9 @@ def extractor_main(request):
 
     video_url = request.GET.get('youtube_link')
     video_id = video_url.split("?v=")[1]
-    req = youtube.commentThreads().list(
+    req = youtube.captions().list(
         part="snippet",
-        videoId=video_id,
-        maxResults=100
+        videoId=video_id
     )
     response = req.execute()
-    return render(response, 'home_main.html')
+    return render(response, )
