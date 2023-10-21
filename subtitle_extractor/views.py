@@ -1,5 +1,6 @@
 import googleapiclient.discovery
-import requests
+import json
+from django.http import HttpResponse
 from django.shortcuts import render
 
 from extract_yt_subtitle.settings import DEVELOPER_KEY
@@ -21,4 +22,6 @@ def extractor_main(request):
         videoId=video_id
     )
     response = req.execute()
-    return render(response, )
+    # print(response)
+    return HttpResponse(json.dumps(response), content_type='application/json')
+
