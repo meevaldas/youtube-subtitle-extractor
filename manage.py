@@ -7,6 +7,14 @@ import sys
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'extract_yt_subtitle.settings')
+
+    import django
+    django.setup()
+
+    # Override default port for `runserver` command
+    from django.core.management.commands.runserver import Command as runserver
+    runserver.default_port = "8080"
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -15,7 +23,8 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
-    execute_from_command_line(["", "runserver"])
+    # execute_from_command_line(["127.0.0.8080", "runserver"])
+    execute_from_command_line(sys.argv)
 
 
 if __name__ == '__main__':
