@@ -35,16 +35,34 @@ def extractor_main(request):
         part="snippet",
         videoId=video_id,
     )
-    response = JsonResponse(req.execute())
+
+    response = req.execute()
+
+    items_list = response['items']
+    for item in items_list:
+        id = item["id"]
+        language = item['snippet']["language"]
+    languages = list(dict.fromkeys(language))
+
+    embed_link = video_url.replace("watch?v=", "embed/")
+
+    context = {'lang': languages, 'embd': embed_link}
+    return render(request, 'home_main.html', context)
+
+
+
+    # return JsonResponse(response)
+    # response = JsonResponse(req.execute())
 
     # select the languages from the json response
-    languages = []
-    language = response.items()
-    for i in language:
-        languages.append(i.response[i])
-    languages = list(dict.fromkeys(languages))
-    context = {'lang': languages}
-    return render(request, 'home_main.html', context)
+    # languages = []
+    # language = response.items()
+    # for i in language:
+    #     languages.append(i.response[i])
+    # languages = list(dict.fromkeys(languages))
+    # context = {'lang': languages}
+    # return render(request, 'home_main.html', context)
+
 
 
 
