@@ -1,23 +1,39 @@
-import io
 import os
 from pathlib import Path
-import google.oauth2.credentials
-import google_auth_oauthlib.flow
-import google_auth_oauthlib
+from babel import Locale
 import googleapiclient.discovery
-import json
-from django.http import JsonResponse
 from google.oauth2 import service_account
 from googleapiclient.http import MediaIoBaseDownload
 from django.shortcuts import render
+from pytube import YouTube
 from extract_yt_subtitle.settings import DEVELOPER_KEY
 
 
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'first_page.html')
+
+# /download/:youtube_video_id
+# embedded youtube link - *****
+# button to list all subtitles - *****
+
+# Second Page
+# /download/:youtube_video_id/subtitile
+# list of all subtitles
+
+# Third Page
+# /download/:youtube_video_id/subtitile/:id
 
 
-def extractor_main(request):
+def extract_video(request):
+    video_url = request.GET.get('youtube_link')
+    id = video_url.split("?v=")[1]
+
+    embed_link = video_url.replace("watch?v=", "embed/")
+    context = {'embd': embed_link, 'id': id}
+    return render(request, 'second_page.html', context)
+
+
+def extract_subtitles(request):
     scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
     os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
     api_service_name = "youtube"
@@ -29,8 +45,10 @@ def extractor_main(request):
 
     youtube = googleapiclient.discovery.build(api_service_name, api_version, credentials=credentials)
 
-    video_url = request.GET.get('youtube_link')
-    video_id = video_url.split("?v=")[1]
+    # video_url = request.GET.get('youtube_link')
+    video_url = request.build_absolute_uri()
+    video_id = video_url.split("%3D")[1]
+
     req = youtube.captions().list(
         part="snippet",
         videoId=video_id,
@@ -42,63 +60,20 @@ def extractor_main(request):
     for item in items_list:
         id = item["id"]
         language = item['snippet']["language"]
-    languages = list(dict.fromkeys(language))
+        if language:
+            if language == 'en-US':
+                language = 'English - US'
+            elif language == 'zh-Hant':
+                language = 'Chinese'
+            else:
+                locale = Locale(language)
+                language = locale.english_name
+        else:
+            language = id
+        item['natural_language'] = language
 
-    embed_link = video_url.replace("watch?v=", "embed/")
-
-    context = {'lang': languages, 'embd': embed_link}
-    return render(request, 'home_main.html', context)
-
-
-
-    # return JsonResponse(response)
-    # response = JsonResponse(req.execute())
-
-    # select the languages from the json response
-    # languages = []
-    # language = response.items()
-    # for i in language:
-    #     languages.append(i.response[i])
-    # languages = list(dict.fromkeys(languages))
-    # context = {'lang': languages}
-    # return render(request, 'home_main.html', context)
+    return render(request, 'third_page.html', response)
 
 
-
-
-
-# def extractor_main_backup(request):
-#     scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
-#
-#     os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-#     api_service_name = "youtube"
-#     api_version = "v3"
-#     # client_secrets_file = "./client_secret_file.json"
-#     client_secrets_file = Path(__file__).parent / "./client_secret_file.json"
-#     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
-#         client_secrets_file,
-#         scopes=scopes)
-#
-#     # flow.redirect_uri = 'https://www.example.com/oauth2callback'
-#     # flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
-#     #     client_secrets_file, scopes)
-#     credentials = flow.run_local_server()
-#
-#     youtube = googleapiclient.discovery.build(api_service_name, api_version, credentials)
-#
-#     video_url = request.GET.get('youtube_link')
-#     video_id = video_url.split("?v=")[1]
-#     req = youtube.captions().download(
-#         id=video_id,
-#         tfmt="srt",
-#         tlang="en",
-#     )
-#     response = req.execute()
-#     fh = io.FileIO("sample", "w")
-#
-#     download = MediaIoBaseDownload(fh, response)
-#     complete = False
-#     while not complete:
-#         status, complete = download.next_chunk()
-#     # # print(response)
-#     # return HttpResponse(response, content_type='application/octet-stream')
+def download_subtitles(request, id):
+    pass

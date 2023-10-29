@@ -5,5 +5,6 @@ app_name = "subtitle_extractor"
 
 urlpatterns = [
     path('', views.home),
-    path('download2/', views.extractor_main)
+    path('id/', views.extract_video),
+    path('id/subtitle/', views.extract_subtitles)
 ]

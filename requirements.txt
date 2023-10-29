@@ -2,3 +2,5 @@ django~=4.2.6
 google-api-python-client
 requests~=2.31.0
 google-auth-oauthlib
+pytube
+babel

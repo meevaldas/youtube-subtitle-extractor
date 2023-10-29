@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -19,15 +20,6 @@
 
     <!-- container starts here -->
     <div class="container">
-            <br>
-        <!-- youtube video starts here -->
-{#        <center><h2></h2></center>#}
-        <br>
-        <div class="ratio ratio-16x9">
-          <iframe src={{ embd }} title="YouTube video" allowfullscreen></iframe>
-        </div>
-        <!-- youtube video ends here -->
-        <br>
         <!-- table starts here -->
         <!-- for loop starts here -->
         <table class="table">
@@ -37,14 +29,16 @@
                 <th scope="col">Download</th>
             </tr>
             </thead>
-            {% for i in lang %}
+            {% for i in items %}
                 <tbody>
                 <tr>
-                    <td>{{ i }}</td>
+                    <td>
+                        {{ i.natural_language }}
+                    </td>
                     <!-- button for download video -->
                     <td>
                         <form>
-                            <button type="button" class="btn btn-success">Download</button>
+                            <button type="button" class="btn btn-success" onclick="download_subtitles()">Download</button>
                         </form>
                     </td>
                 </tr>
