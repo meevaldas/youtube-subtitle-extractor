@@ -9,28 +9,16 @@ from pytube import YouTube
 from extract_yt_subtitle.settings import DEVELOPER_KEY
 
 
-def home(request):
-    return render(request, 'first_page.html')
-
-# /download/:youtube_video_id
-# embedded youtube link - *****
-# button to list all subtitles - *****
-
-# Second Page
-# /download/:youtube_video_id/subtitile
-# list of all subtitles
-
-# Third Page
-# /download/:youtube_video_id/subtitile/:id
 
 
-def extract_video(request):
+
+def extract_video(request, *args, **kwargs):
     video_url = request.GET.get('youtube_link')
-    id = video_url.split("?v=")[1]
+    vid = video_url.split("?v=")[1]
 
     embed_link = video_url.replace("watch?v=", "embed/")
-    context = {'embd': embed_link, 'id': id}
-    return render(request, 'second_page.html', context)
+    context = {'embd': embed_link}
+    return render(request, 'details.html', context)
 
 
 def extract_subtitles(request):
@@ -46,8 +34,8 @@ def extract_subtitles(request):
     youtube = googleapiclient.discovery.build(api_service_name, api_version, credentials=credentials)
 
     # video_url = request.GET.get('youtube_link')
-    video_url = request.build_absolute_uri()
-    video_id = video_url.split("%3D")[1]
+    # video_url = request.build_absolute_uri()
+    # video_id = video_url.split("%3D")[1]
 
     req = youtube.captions().list(
         part="snippet",
