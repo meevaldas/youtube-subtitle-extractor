@@ -12,26 +12,17 @@ from extract_yt_subtitle.settings import DEVELOPER_KEY
 
 
 
-def extract_video(request, *args, **kwargs):
-    video_url = request.GET.get('youtube_link')
-    vid = video_url.split("?v=")[1]
-
-    embed_link = video_url.replace("watch?v=", "embed/")
-    context = {'embd': embed_link}
-    return render(request, 'details.html', context)
-
-
 def extract_subtitles(request):
-    scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
-    os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-    api_service_name = "youtube"
-    api_version = "v3"
-
-    SERVICE_ACCOUNT_FILE = Path(__file__).parent / "./service_account.json"
-
-    credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=scopes)
-
-    youtube = googleapiclient.discovery.build(api_service_name, api_version, credentials=credentials)
+    # scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
+    # os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+    # api_service_name = "youtube"
+    # api_version = "v3"
+    #
+    # SERVICE_ACCOUNT_FILE = Path(__file__).parent / "./service_account.json"
+    #
+    # credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=scopes)
+    #
+    # youtube = googleapiclient.discovery.build(api_service_name, api_version, credentials=credentials)
 
     # video_url = request.GET.get('youtube_link')
     # video_url = request.build_absolute_uri()
@@ -60,8 +51,6 @@ def extract_subtitles(request):
             language = id
         item['natural_language'] = language
 
-    return render(request, 'third_page.html', response)
+    return render(request, 'subtitles.html', response)
 
 
-def download_subtitles(request, id):
-    pass

@@ -29,6 +29,7 @@
                 <th scope="col">Download</th>
             </tr>
             </thead>
+        <br><br>
             {% for i in items %}
                 <tbody>
                 <tr>
@@ -37,8 +38,9 @@
                     </td>
                     <!-- button for download video -->
                     <td>
-                        <form>
-                            <button type="button" class="btn btn-success" onclick="download_subtitles()">Download</button>
+                        <form action= "{{ i.id }}/" method="get">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success">Download</button>
                         </form>
                     </td>
                 </tr>
