@@ -31,11 +31,34 @@
         <!-- youtube video ends here -->
         <!-- form starts here -->
         <form action="{{ video_id }}/subtitles/" method="get">
-            <br><br>
             <center>
+                <br><br>
                 <button type="submit" class="btn btn-primary">Subtitles</button>
             </center>
         </form>
+        <form action="{{ video_id }}/comments/" method="post">
+            {% csrf_token %}
+            <center>
+                <br><br>
+                <button type="submit" class="btn btn-primary">Comments</button>
+            </center>
+        </form>
+{#        <div class="row">#}
+{#            <div class="col-12 col-sm-6 col-md-6">#}
+{#                <br><br>#}
+{#                <form action="{{ video_id }}/subtitles/" method="get">#}
+{#                    <button type="submit" class="btn btn-primary">Subtitles</button>#}
+{#                </form>#}
+{#            </div>#}
+{#             <div class="col-12 col-sm-6 col-md-6">#}
+{#                 <br><br>#}
+{#                <form>#}
+{#                    <button class="btn btn-primary" type="submit">Comments</button>#}
+{#                </form>#}
+{#             </div>#}
+{#        </div>#}
+
+
         <!-- form ends here -->
     </div>
     <!-- container ends here -->

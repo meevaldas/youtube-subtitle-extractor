@@ -42,10 +42,7 @@ def subtitles(request, id):
 
 
 def download_subtitles(request, id, cap_id):
-    # caption_info = youtube.captions().list(
-    #     part='id',
-    #     videoId="9sfvpupkb6k"
-    # ).execute().get('items', [])
+
     caption_str = youtube.captions().download(
         id=cap_id,
         tfmt='srt'

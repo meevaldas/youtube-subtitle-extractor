@@ -38,7 +38,7 @@
                     </td>
                     <!-- button for download video -->
                     <td>
-                        <form action= "{{ i.id }}/" method="get">
+                        <form action= "{{ i.id }}/" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-success">Download</button>
                         </form>
